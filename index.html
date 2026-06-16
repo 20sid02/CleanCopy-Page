@@ -14,7 +14,6 @@
   <meta property="og:url" content="https://cleancopy.app/" />
   <meta property="og:title" content="CleanCopy — Remove Tracking from URLs Instantly" />
   <meta property="og:description" content="Paste a dirty link. Get a clean one. No sign-up, no tracking, no nonsense. Works on YouTube, Amazon, Instagram, TikTok, Spotify, and more." />
-  <meta property="og:image" content="https://cleancopy.app/og-image.png" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -76,6 +75,9 @@
   }
   </script>
 
+  <link rel="icon" type="image/png" href="icon.png" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <meta property="og:image" content="https://cleancopy.app/icon.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -84,7 +86,7 @@
   <nav class="nav">
     <div class="nav-inner container">
       <a href="/" class="logo">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+        <img src="icon.png" alt="CleanCopy icon" width="26" height="26" style="border-radius:6px;" />
         CleanCopy
       </a>
       <a href="#mac-app" class="nav-cta">Get the Mac App</a>
@@ -94,7 +96,8 @@
   <!-- HERO -->
   <header class="hero">
     <div class="container hero-inner">
-      <div class="badge">Free URL Cleaner Tool</div>
+      <!-- <img src="icon.png" alt="CleanCopy" width="96" height="96" style="border-radius:22px;box-shadow:0 8px 32px rgba(0,0,0,.18);margin-bottom:20px;" />
+      <div class="badge">Free URL Cleaner Tool</div> -->
       <h1>Strip tracking junk<br />from any link — instantly.</h1>
       <p class="hero-sub">Paste a URL below. CleanCopy removes UTM tags, <code>fbclid</code>, <code>gclid</code>, Amazon bloat, YouTube tracking, and 40+ other surveillance parameters before you share.</p>
     </div>
@@ -297,7 +300,7 @@
             <span class="menubar-app-icon">✂</span>
           </div>
           <div class="menubar-panel">
-            <div class="panel-icon">✂</div>
+            <div class="panel-icon"><img src="icon.png" alt="" width="40" height="40" style="border-radius:10px;display:block;" /></div>
             <div class="panel-title">CleanCopy</div>
             <div class="panel-sub">Strips tracking junk from URLs<br>the moment you copy them.</div>
             <div class="panel-divider"></div>
