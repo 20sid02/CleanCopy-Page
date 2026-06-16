@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>CleanCopy — Remove Tracking from URLs Instantly</title>
+  <meta name="description" content="Paste any dirty link and CleanCopy strips UTM tags, fbclid, tracking parameters, and URL bloat in seconds. Free web tool. Mac app available." />
+  <meta name="keywords" content="remove utm parameters, clean url, strip tracking from link, url cleaner, remove fbclid, remove tracking parameters, clean youtube link, clean amazon link, url shortener" />
+  <link rel="canonical" href="https://cleancopy.app/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cleancopy.app/" />
+  <meta property="og:title" content="CleanCopy — Remove Tracking from URLs Instantly" />
+  <meta property="og:description" content="Paste a dirty link. Get a clean one. No sign-up, no tracking, no nonsense. Works on YouTube, Amazon, Instagram, TikTok, Spotify, and more." />
+  <meta property="og:image" content="https://cleancopy.app/og-image.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CleanCopy — Remove Tracking from URLs" />
+  <meta name="twitter:description" content="Paste a dirty link. Get a clean one. Free web tool for stripping UTM tags and tracking junk from any URL." />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "CleanCopy URL Cleaner",
+        "url": "https://cleancopy.app/",
+        "description": "Free online tool that removes UTM parameters, fbclid, and other tracking junk from URLs instantly.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "CleanCopy for Mac",
+        "operatingSystem": "macOS",
+        "applicationCategory": "UtilitiesApplication",
+        "description": "Mac menu bar app that automatically strips tracking parameters from every URL you copy — no paste required.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are UTM parameters?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "UTM parameters are tags appended to URLs by marketers to track where traffic comes from (source, medium, campaign). They add no value for the person sharing or clicking a link and can be safely removed."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is fbclid?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "fbclid is a tracking parameter added by Facebook/Meta to every outbound link clicked on its platforms. It lets Meta track what you do after clicking a link. CleanCopy removes it automatically."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does CleanCopy work on YouTube, Amazon, and Spotify links?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. CleanCopy has specific cleaning rules for YouTube (removes share tracking, keeps video ID and timestamp), Amazon (collapses to the clean /dp/ASIN path), Spotify (removes si tracking token), and dozens of other platforms."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner container">
+      <a href="/" class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+        CleanCopy
+      </a>
+      <a href="#mac-app" class="nav-cta">Get the Mac App</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container hero-inner">
+      <div class="badge">Free URL Cleaner Tool</div>
+      <h1>Strip tracking junk<br />from any link — instantly.</h1>
+      <p class="hero-sub">Paste a URL below. CleanCopy removes UTM tags, <code>fbclid</code>, <code>gclid</code>, Amazon bloat, YouTube tracking, and 40+ other surveillance parameters before you share.</p>
+    </div>
+  </header>
+
+  <!-- TOOL -->
+  <section class="tool-section" id="tool">
+    <div class="container">
+      <div class="tool-card">
+
+        <label for="dirty-input" class="tool-label">Paste your link here</label>
+        <div class="input-wrap">
+          <textarea
+            id="dirty-input"
+            class="url-input"
+            rows="3"
+            placeholder="https://www.amazon.com/dp/B08N5WRWNW?ref=nav_ya_signin&amp;utm_source=newsletter&amp;fbclid=IwAR2x..."
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+          ></textarea>
+          <button class="clear-btn" id="clear-btn" aria-label="Clear input" hidden>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <!-- RESULT -->
+        <div id="result-block" class="result-block" hidden>
+          <div class="result-header">
+            <div class="result-status" id="result-status"></div>
+            <button class="copy-btn" id="copy-btn" aria-label="Copy clean URL">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span id="copy-label">Copy</span>
+            </button>
+          </div>
+          <div class="clean-url" id="clean-url"></div>
+          <div class="removed-tags" id="removed-tags"></div>
+        </div>
+
+        <!-- CTA INSIDE TOOL -->
+        <div id="mac-cta" class="mac-cta" hidden>
+          <div class="mac-cta-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+          </div>
+          <div class="mac-cta-text">
+            <strong>Tired of copying and pasting?</strong>
+            Get the Mac Menu Bar App to clean your links automatically in the background.
+          </div>
+          <a href="#mac-app" class="mac-cta-btn">Get the App →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IS THIS -->
+  <section class="section" id="what">
+    <div class="container section-grid">
+      <div class="section-text">
+        <h2>What is a tracking parameter?</h2>
+        <p>Every time you share a link from Facebook, a newsletter, or a Google ad, the platform silently appends surveillance tags to the URL. Tags like <code>utm_source=newsletter</code>, <code>fbclid=IwAR2...</code>, or <code>?s=46</code> tell the destination site exactly where you came from and who you are.</p>
+        <p>They do nothing for the person receiving the link — they just bulk it up and expose browsing behavior. CleanCopy strips them before the link leaves your clipboard.</p>
+      </div>
+      <div class="param-list-wrap">
+        <div class="param-list-label">Common parameters CleanCopy removes</div>
+        <ul class="param-list">
+          <li><code>utm_source</code> <span>Campaign source tracking</span></li>
+          <li><code>fbclid</code> <span>Facebook click identifier</span></li>
+          <li><code>gclid</code> <span>Google Ads click ID</span></li>
+          <li><code>msclkid</code> <span>Microsoft Ads click ID</span></li>
+          <li><code>igsh</code> <span>Instagram share token</span></li>
+          <li><code>_t</code> <span>TikTok share identifier</span></li>
+          <li><code>mkt_tok</code> <span>Marketo email token</span></li>
+          <li><code>_hsenc</code> <span>HubSpot identity param</span></li>
+          <li><code>sh</code> <span>Reddit share ID</span></li>
+          <li><code>si</code> <span>Spotify tracking token</span></li>
+          <li><code>irclickid</code> <span>Impact affiliate tracker</span></li>
+          <li><code>yclid</code> <span>Yandex click ID</span></li>
+        </ul>
+        <div class="param-more">+ 30 more removed automatically</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORM SECTION -->
+  <section class="section section-alt" id="platforms">
+    <div class="container">
+      <h2 class="section-center-heading">Smart cleaning for every platform</h2>
+      <p class="section-center-sub">Generic trackers are removed universally. Specific platforms get their own rules.</p>
+      <div class="platform-grid">
+        <div class="platform-card">
+          <div class="platform-icon platform-yt">▶</div>
+          <h3>YouTube</h3>
+          <p>Keeps video ID, timestamp, and playlist. Removes <code>si</code>, <code>feature</code>, <code>pp</code>, and all share tokens. Short <code>youtu.be</code> links are stripped entirely.</p>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon platform-amz">📦</div>
+          <h3>Amazon</h3>
+          <p>Collapses the entire URL to a clean <code>/dp/ASIN</code> canonical path. Eliminates <code>ref</code>, <code>linkCode</code>, <code>tag</code>, and all affiliate parameters.</p>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon platform-sp">🎵</div>
+          <h3>Spotify</h3>
+          <p>Removes <code>si</code>, <code>context</code>, and <code>go</code> — the share tokens Spotify injects into every link shared from mobile.</p>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon platform-ebay">🛒</div>
+          <h3>eBay</h3>
+          <p>Collapses to the clean <code>/itm/ITEMID</code> format. Drops <code>_trkparms</code>, <code>amdata</code>, <code>mkevt</code>, <code>mkcid</code>, and hash fragments.</p>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon platform-tk">🎵</div>
+          <h3>TikTok</h3>
+          <p>Strips <code>_t</code> (share identifier), <code>tt_from</code>, <code>tt_content_id</code>, and <code>embed_source</code> — all unique tracking tokens TikTok embeds on share.</p>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon platform-shopify">🏪</div>
+          <h3>Shopify Stores</h3>
+          <p>Detected automatically by URL pattern. Removes <code>_pos</code>, <code>_sid</code>, and <code>_ss</code> across any Shopify-powered storefront.</p>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon platform-sub">📰</div>
+          <h3>Substack</h3>
+          <p>Removes the <code>r</code> referral ID each writer's personal share link appends — the one that earns them credit for new subscribers you bring.</p>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon platform-med">Ⓜ</div>
+          <h3>Medium</h3>
+          <p>Strips <code>_branch_match_id</code> and <code>_branch_referrer</code> — Branch.io deep-link tracking that Medium injects on every shared article.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="how">
+    <div class="container">
+      <h2 class="section-center-heading">How it works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>You copy a link</h3>
+          <p>From a YouTube video, a tweet, an Amazon product, or anywhere else. The URL typically has 5–15 tracking parameters hanging off it.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>CleanCopy inspects it</h3>
+          <p>The URL is parsed and matched against 40+ known tracking parameters and platform-specific rules — entirely in your browser, no server involved.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>You get a clean link</h3>
+          <p>The destination is identical. The tracking junk is gone. Share it with confidence that you're not carrying surveillance tags into someone else's browser.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAC APP -->
+  <section class="section section-alt" id="mac-app">
+    <div class="container mac-app-section">
+      <div class="mac-app-content">
+        <div class="mac-app-badge">macOS Menu Bar App</div>
+        <h2>Automatic cleaning.<br />Zero effort.</h2>
+        <p>The web tool is great. The Mac app is better. Install CleanCopy in your menu bar and every URL you copy is cleaned <em>before you even think about pasting it</em> — no browser tab, no manual step, no friction.</p>
+        <ul class="mac-features">
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Runs silently in the background
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            No dock icon — lives in your menu bar
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Instant — cleans before you paste
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Works on YouTube, Amazon, Spotify, eBay, TikTok, Reddit &amp; more
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            One-click pause when you need it
+          </li>
+        </ul>
+        <div class="app-price-row">
+          <a href="#" class="app-store-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Download on the Mac App Store
+          </a>
+        </div>
+      </div>
+      <div class="mac-app-visual" aria-hidden="true">
+        <div class="menubar-mockup">
+          <div class="menubar-bar">
+            <span class="menubar-icons">● ◉ ◎</span>
+            <span class="menubar-app-icon">✂</span>
+          </div>
+          <div class="menubar-panel">
+            <div class="panel-icon">✂</div>
+            <div class="panel-title">CleanCopy</div>
+            <div class="panel-sub">Strips tracking junk from URLs<br>the moment you copy them.</div>
+            <div class="panel-divider"></div>
+            <div class="panel-toggle-row">
+              <span class="panel-toggle-label">✓ Active</span>
+              <div class="panel-toggle on"></div>
+            </div>
+            <div class="panel-last">
+              <div class="panel-last-label">Last cleaned URL</div>
+              <div class="panel-last-url">open.spotify.com/track/4uLU6h…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container faq-container">
+      <h2 class="section-center-heading">Frequently asked questions</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Does CleanCopy send my URLs anywhere?</summary>
+          <p>No. The web tool runs entirely in your browser — JavaScript parses and cleans the URL locally. Nothing is transmitted to a server. The Mac app works the same way: it reads and writes your clipboard on-device only.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Will removing tracking parameters break the link?</summary>
+          <p>No. Tracking parameters are read by analytics tools after the page loads — they have no effect on routing. The destination page is identical with or without them. CleanCopy only removes parameters it is certain are tracking-only.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What is UTM, and why should I care?</summary>
+          <p>UTM stands for Urchin Tracking Module — a standard from Google Analytics. Marketers append <code>utm_source</code>, <code>utm_medium</code>, and similar tags to links so they can measure campaign performance. They're harmless but noisy, and they expose which email or ad drove your click to the destination site.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does the Mac app work without an internet connection?</summary>
+          <p>Yes. CleanCopy for Mac is entirely offline. It reads your clipboard, applies cleaning rules locally, and writes the result back — no network request is made at any point.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Which macOS version is required for the Mac app?</summary>
+          <p>CleanCopy requires macOS 14 Sonoma or later.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does CleanCopy affect links where the parameters matter?</summary>
+          <p>CleanCopy is conservative. For YouTube it keeps <code>v</code> (video ID), <code>t</code> (timestamp), and <code>list</code> (playlist). For Amazon it preserves the product ASIN. It only removes parameters that are universally recognized as tracking-only.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER / PRIVACY -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+        CleanCopy
+      </div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="#tool">Free Tool</a>
+        <a href="#mac-app">Mac App</a>
+        <a href="#faq">FAQ</a>
+        <a href="privacy.html">Privacy</a>
+      </nav>
+    </div>
+
+    <div class="footer-bottom container">
+      <p>© 2025 CleanCopy. Made with care. No tracking, ever.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { cleanURL, removedParams } from './cleaner.js';
+
+    const input    = document.getElementById('dirty-input');
+    const clearBtn = document.getElementById('clear-btn');
+    const result   = document.getElementById('result-block');
+    const status   = document.getElementById('result-status');
+    const urlOut   = document.getElementById('clean-url');
+    const tagsOut  = document.getElementById('removed-tags');
+    const copyBtn  = document.getElementById('copy-btn');
+    const copyLbl  = document.getElementById('copy-label');
+    const macCta   = document.getElementById('mac-cta');
+
+    let currentClean = '';
+
+    function process() {
+      const raw = input.value;
+      clearBtn.hidden = raw.length === 0;
+
+      if (!raw.trim()) { result.hidden = true; macCta.hidden = true; return; }
+
+      const { cleaned, wasDirty } = cleanURL(raw);
+      currentClean = cleaned;
+
+      result.hidden = false;
+
+      if (wasDirty) {
+        const removed = removedParams(raw, cleaned);
+        status.className = 'result-status dirty';
+        status.textContent = `✓ Cleaned — ${removed.length} tracker${removed.length !== 1 ? 's' : ''} removed`;
+        tagsOut.innerHTML = removed.map(p => `<span class="tag">${p}</span>`).join('');
+        macCta.hidden = false;
+      } else {
+        status.className = 'result-status clean';
+        status.textContent = '✓ Already clean — no tracking parameters found';
+        tagsOut.innerHTML = '';
+        macCta.hidden = true;
+      }
+
+      urlOut.textContent = cleaned;
+    }
+
+    input.addEventListener('input', process);
+    input.addEventListener('paste', () => setTimeout(process, 0));
+
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      clearBtn.hidden = true;
+      result.hidden = true;
+      macCta.hidden = true;
+      input.focus();
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      if (!currentClean) return;
+      try {
+        await navigator.clipboard.writeText(currentClean);
+        copyLbl.textContent = 'Copied!';
+        copyBtn.classList.add('copied');
+        setTimeout(() => { copyLbl.textContent = 'Copy'; copyBtn.classList.remove('copied'); }, 2000);
+      } catch {
+        copyLbl.textContent = 'Failed';
+        setTimeout(() => { copyLbl.textContent = 'Copy'; }, 2000);
+      }
+    });
+  </script>
+
+</body>
+</html>
